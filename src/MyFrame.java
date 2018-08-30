@@ -147,7 +147,7 @@ public class MyFrame extends JFrame {
         int countsStr = 0;
         try {
             FileWriter writer = new FileWriter(fileReport);
-            writer.write("GUID;OrgCode;OrFKCode;Result;Path file;Error\r\n");
+            writer.write("GUID;OrgCode;OrgStatus;OrFKCode;Result;Path file;Error\r\n");
             String s = "";
             int countsTr = 0;
             int countsFs = 0;

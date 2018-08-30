@@ -34,24 +34,26 @@ public class ValidXML {
         }
         return exceptions;
     }
-    public String parseXML(File xmlX) throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
+    public String parseXML(File xmlX) throws IOException, SAXException, ParserConfigurationException {
         DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document doc = builder.parse(xmlX);
         Element root = doc.getDocumentElement();
         Element elem = (Element) root.getElementsByTagName("GUID").item(0);
         Element elem1 = (Element) root.getElementsByTagName("OrgCode").item(0);
-        Element elem2 = (Element) root.getElementsByTagName("OrFKCode").item(0);
+        Element elem2 = (Element) root.getElementsByTagName("OrgStatus").item(0);
+        Element elem3 = (Element) root.getElementsByTagName("OrFKCode").item(0);
 
         String s0 = elem.getTextContent();
         String s1 = elem1.getTextContent();
         String s2 = elem2.getTextContent();
+        String s3 = elem3.getTextContent();
 
 
         //System.out.println(s + ";" + s1 + ";");
         //System.out.println(s0 + ";" + s1 + ";" + s2 + ";");
-        return s0 + ";" + s1 + ";" + s2 + ";";
+        return s0 + ";" + s1 + ";" + s2 + ";" + s3 + ";";
     }
-    String validXmlforXsd(File xml, File xsd) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException {
+    String validXmlforXsd(File xml, File xsd) throws IOException, SAXException, ParserConfigurationException {
         List<String> list = ValidXML.validateXMLByXSDAndGetErrors(xml, xsd);
         String str = "";
         if (list.isEmpty()){
@@ -64,35 +66,6 @@ public class ValidXML {
 
        // System.out.println(str);
         return str;
-
-    }
-
-
-    public void checkForXml(File pathXsd, File... pathXml) {
-
-        File fileReport = new File("report.txt");
-        try {
-        FileWriter writer = new FileWriter(fileReport);
-        writer.write("GUID;OrgCode;OrFKCode;Result;Path file;Error\r\n");
-        String s = "";
-        if (pathXml[0].isDirectory()) {
-            for (File file : pathXml[0].listFiles()) {
-                s = validXmlforXsd(file, pathXsd);
-                writer.write(s + "\r\n");
-            }
-        }else {
-            for (int i = 0; i < pathXml.length; i++) {
-                s = validXmlforXsd(pathXml[i], pathXsd);
-                writer.write(s + "\r\n");
-            }
-
-        }
-        writer.flush();
-        writer.close();
-        } catch (Exception e) {
-
-        }
-
 
     }
 }
